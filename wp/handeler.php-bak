@@ -1,0 +1,54 @@
+<?php
+if( !is_admin() ){
+	
+	add_action('the_post', function(){
+		$options = unserialize( get_option('soc-share-set') );
+		if ( in_array( get_post_type(), $options['display_on'] ) ){
+			global $post;
+		if( get_post_meta($post->ID, 'soc-share-global', true) == 'custom' ) {
+			unset($options);
+			$options = unserialize( get_post_meta( $post->ID, 'soc-share-set', true ) );
+		}
+			//else $options = unserialize( get_option('soc-share-set') );
+			$left='';
+			switch( $options[ 'placement' ] ){
+				case 'left':
+					add_filter( 'the_content', function($content){
+						global $post;
+						if( get_post_meta($post->ID, 'soc-share-global', true) == 'custom' ) $options = unserialize( get_post_meta( $post->ID, 'soc-share-set', true ) );
+						else $options = unserialize( get_option('soc-share-set') );
+						
+						if( !isset( $options['color'] ) ) $color = $options['customcolor'];
+						return $content . render_soc_share_html( implode(",", $options['soc_netwrks']), $options['size'], 'left', $post->ID, @$color );
+					});
+					break;
+				case 'aftrcntnt':
+					add_filter( 'the_content', function($content){
+						global $post;
+						if( get_post_meta($post->ID, 'soc-share-global', true) == 'custom' ) $options = unserialize( get_post_meta( $post->ID, 'soc-share-set', true ) );
+						else $options = unserialize( get_option('soc-share-set') );
+						if( !isset( $options['color'] ) ) $color = $options['customcolor'];
+						return $content . render_soc_share_html( implode(",", $options['soc_netwrks']), $options['size'], 'aftrcntnt', $post->ID, @$color );
+					});
+					break;
+				case 'insdftrdimg':
+					break;
+				default:
+					  add_filter( 'the_title', function($title){
+						//if( is_main_query() ){
+						global $post;
+						if( $post->ID == 2 ){
+							if( get_post_meta($post->ID, 'soc-share-global', true) == 'custom' ) $options = unserialize( get_post_meta( $post->ID, 'soc-share-set', true ) );
+							else $options = unserialize( get_option('soc-share-set') );
+							return $title . render_soc_share_html( implode(",", $options['soc_netwrks']), $options['size'], 'default', $post->ID );
+						}
+						//else return $title;
+					}); 
+			}
+		}
+	}); 
+	//add_filter( 'the_content', 'soc_share_handle' );
+	//add_filter( 'the_title', 'soc_share_handle' );
+	//add_filter( 'the_content', 'soc_share_handle' );
+}
+?>
