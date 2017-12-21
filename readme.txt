@@ -1,7 +1,7 @@
-==================== Toptal Social Sharing Plugin ====================
+==================== Social Sharing Plugin ====================
 Developed By: S. Baljinder Singh
 
-Purpose: For test skills evaluation
+Purpose: Light codes for social sharing
 
 Directory Structure:
 
@@ -13,4 +13,4 @@ wp/req/			-> css and js files to be used in frontend
 
 assets/			-> Icons and images to be used in plugin
 
-==================== Toptal Social Sharing Plugin ====================
+==================== Social Sharing Plugin ====================
